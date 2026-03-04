@@ -1,0 +1,10 @@
+CREATE SCHEMA IF NOT EXISTS users_service;
+
+CREATE TABLE IF NOT EXISTS users_service.users (
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
+    created_at TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP
+    );
