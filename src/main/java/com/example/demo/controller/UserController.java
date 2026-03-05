@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.model.UserRequest;
 import com.example.demo.model.UserResponse;
@@ -18,26 +21,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Tag(name = "Пользователь")
 public class UserController {
 
     private final UserService service;
 
     @PostMapping
-    public UserResponse create(@RequestBody UserRequest request) {
+    @Operation(summary = "Создать юзера")
+    public UserResponse create(@Valid @RequestBody UserRequest request) {
         return service.create(request);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Получить юзера")
     public UserResponse get(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
+    @Operation(summary = "Получить всех юзеров")
     public List<UserResponse> getAll() {
         return service.getAll();
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Удалить юзера")
     public Map<String, Boolean> delete(@PathVariable Long id) {
         service.delete(id);
         return Map.of("success", true);
