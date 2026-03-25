@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.enums.UserRole;
 import com.example.demo.enums.UserStatus;
 import com.example.demo.exception.UserException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class UserService {
                         .passwordHash(hash)
                         .status(UserStatus.ACTIVE)
                         .createdAt(LocalDateTime.now())
+                        .role(UserRole.USER)
                         .build();
 
         User saved = repository.save(user);

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.UserRole;
 import com.example.demo.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class User {
     private String username;
     private String passwordHash;
     private UserStatus status;
+    private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

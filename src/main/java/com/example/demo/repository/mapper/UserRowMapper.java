@@ -1,5 +1,6 @@
 package com.example.demo.repository.mapper;
 
+import com.example.demo.enums.UserRole;
 import com.example.demo.enums.UserStatus;
 import com.example.demo.model.User;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,6 +19,7 @@ public class UserRowMapper implements RowMapper<User> {
                    .username(rs.getString("username"))
                    .passwordHash(rs.getString("password_hash"))
                    .status(UserStatus.valueOf(rs.getString("status")))
+                   .role(UserRole.valueOf(rs.getString("role")))
                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                    .updatedAt(
                            rs.getTimestamp("updated_at") != null ?

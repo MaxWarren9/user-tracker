@@ -20,8 +20,8 @@ public class UserRepository {
     public User save(User user) {
 
         String sql = """
-            INSERT INTO users_service.users(username, password_hash, status, created_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO users_service.users(username, password_hash, status, created_at, role)
+            VALUES (?, ?, ?, ?, ?)
             RETURNING *
             """;
 
@@ -29,7 +29,8 @@ public class UserRepository {
                 user.getUsername(),
                 user.getPasswordHash(),
                 user.getStatus().name(),
-                user.getCreatedAt()
+                user.getCreatedAt(),
+                user.getRole().name()
         );
     }
 
