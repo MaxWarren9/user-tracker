@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.client.TaskClient;
 import com.example.demo.enums.UserRole;
 import com.example.demo.enums.UserStatus;
 import com.example.demo.exception.UserException;
@@ -20,6 +21,7 @@ public class UserService {
 
     private final UserRepository repository;
     private final BCryptPasswordEncoder encoder;
+    private final TaskClient taskClient;
 
     public UserResponse create(UserRequest request) {
 
@@ -53,6 +55,10 @@ public class UserService {
     }
 
     public void delete(Long id) {
+        if (taskClient.existsByAssigneeId(id)) {
+            throw new UserException("User has active tasks");
+        }
+
         repository.softDelete(id);
     }
 }
