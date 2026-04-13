@@ -7,4 +7,5 @@ CREATE TABLE IF NOT EXISTS users_service.users (
     status VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP
-    );
+);
+
