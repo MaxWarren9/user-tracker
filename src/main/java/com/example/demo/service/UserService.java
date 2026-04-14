@@ -32,25 +32,25 @@ public class UserService {
                         .passwordHash(hash)
                         .status(UserStatus.ACTIVE)
                         .createdAt(LocalDateTime.now())
-                        .role(UserRole.USER)
+                        .role(request.getRole() != null ? request.getRole() : UserRole.USER)
                         .build();
 
         User saved = repository.save(user);
 
-        return new UserResponse(saved.getId(), saved.getUsername());
+        return new UserResponse(saved.getId(), saved.getUsername(), saved.getRole());
     }
 
     public UserResponse getById(Long id) {
         User user = repository.findById(id)
                               .orElseThrow(() -> new UserException("User not found"));
 
-        return new UserResponse(user.getId(), user.getUsername());
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
     }
 
     public List<UserResponse> getAll() {
         return repository.findAll()
                          .stream()
-                         .map(u -> new UserResponse(u.getId(), u.getUsername()))
+                         .map(u -> new UserResponse(u.getId(), u.getUsername(), u.getRole()))
                          .toList();
     }
 
