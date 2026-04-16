@@ -16,55 +16,49 @@ public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRowMapper mapper;
-
-    public User save(User user) {
-
-        String sql = """
+    private static final String SAVE = """
             INSERT INTO users_service.users(username, password_hash, status, created_at, role)
             VALUES (?, ?, ?, ?, ?)
             RETURNING *
             """;
+    private static final String FIND_BY_ID = """
+            SELECT * FROM users_service.users
+            WHERE id = ? AND status <> ?
+            """;
+    private static final String FIND_ALL = """
+            SELECT * FROM users_service.users
+            WHERE status <> ?
+            """;
+    private static final String SOFT_DELETE = """
+            UPDATE users_service.users
+            SET status = ?,
+                updated_at = NOW()
+            WHERE id = ?
+            """;
 
-        return jdbcTemplate.queryForObject(sql, mapper,
+    public User save(User user) {
+        return jdbcTemplate.queryForObject(SAVE, mapper,
                 user.getUsername(),
                 user.getPasswordHash(),
-                user.getStatus().name(),
+                user.getStatus()
+                    .name(),
                 user.getCreatedAt(),
-                user.getRole().name()
+                user.getRole()
+                    .name()
         );
     }
 
     public Optional<User> findById(Long id) {
-
-        String sql = """
-            SELECT * FROM users_service.users
-            WHERE id = ? AND status <> ?
-            """;
-
-        return jdbcTemplate.query(sql, mapper, id, UserStatus.DELETED.name())
+        return jdbcTemplate.query(FIND_BY_ID, mapper, id, UserStatus.DELETED.name())
                            .stream()
                            .findFirst();
     }
 
     public List<User> findAll() {
-
-        String sql = """
-            SELECT * FROM users_service.users
-            WHERE status <> ?
-            """;
-
-        return jdbcTemplate.query(sql, mapper, UserStatus.DELETED.name());
+        return jdbcTemplate.query(FIND_ALL, mapper, UserStatus.DELETED.name());
     }
 
     public void softDelete(Long id) {
-
-        String sql = """
-            UPDATE users_service.users
-            SET status = ?,
-                updated_at = now()
-            WHERE id = ?
-            """;
-
-        jdbcTemplate.update(sql,UserStatus.DELETED.name(), id);
+        jdbcTemplate.update(SOFT_DELETE, UserStatus.DELETED.name(), id);
     }
 }
