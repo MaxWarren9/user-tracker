@@ -49,16 +49,16 @@ public class UserRepository {
     }
 
     public Optional<User> findById(Long id) {
-        return jdbcTemplate.query(FIND_BY_ID, mapper, id, UserStatus.DELETED.name())
+        return jdbcTemplate.query(FIND_BY_ID, mapper, id, UserStatus.INACTIVE.name())
                            .stream()
                            .findFirst();
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query(FIND_ALL, mapper, UserStatus.DELETED.name());
+        return jdbcTemplate.query(FIND_ALL, mapper, UserStatus.INACTIVE.name());
     }
 
     public void softDelete(Long id) {
-        jdbcTemplate.update(SOFT_DELETE, UserStatus.DELETED.name(), id);
+        jdbcTemplate.update(SOFT_DELETE, UserStatus.INACTIVE.name(), id);
     }
 }
