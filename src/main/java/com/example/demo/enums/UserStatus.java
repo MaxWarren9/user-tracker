@@ -2,5 +2,5 @@ package com.example.demo.enums;
 
 public enum UserStatus {
     ACTIVE,
-    DELETED
+    INACTIVE
 }

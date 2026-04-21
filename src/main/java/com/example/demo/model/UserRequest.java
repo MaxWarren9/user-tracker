@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -13,4 +14,6 @@ public class UserRequest {
     @NotBlank(message = "Пароль не может быть пустым")
     @Size(min = 8, message = "Пароль должен быть минимум из 8 символов")
     private String password;
+
+    private UserRole role;
 }
